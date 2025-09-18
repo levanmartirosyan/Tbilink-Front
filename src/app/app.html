@@ -1,0 +1,8 @@
+<button nz-button nzShape="circle" (click)="toggleTheme()">
+  @if (isDark) {
+  <i nz-icon nzType="sun" nzTheme="outline"></i>
+  } @else {
+  <i nz-icon nzType="moon" nzTheme="outline"></i>
+  }
+</button>
+<router-outlet></router-outlet>

@@ -1,0 +1,152 @@
+<section [class]="CurrentTheme + '-theme'">
+  <div class="logo">
+    <img src="assets/icons/logoo.png" alt="" />
+  </div>
+  <div class="auth">
+    <div class="greeting">
+      <h2>TBILINK</h2>
+      <p>
+        @if (Action === "SignIn" || Action === "SignUp") { Sign in to your
+        account or create a new one } @else if (Action === 'Recovery') { Enter
+        Your Email To Recover Account } @else if (Action === 'EnterCode') { Code
+        Sent To - <span>example&#64;gmail.com</span>
+        } @else if (Action === 'EnterNewPassword') { Create New Password }
+      </p>
+    </div>
+    <div
+      class="selector"
+      [class.hidden]="Action === 'Recovery' || Action === 'EnterCode' || Action === 'EnterNewPassword'"
+    >
+      <div
+        class="indicator"
+        [style.left]="Action === 'SignIn' ? '4px' : 'calc(50% + 2px)'"
+      ></div>
+
+      <div
+        class="option"
+        [class.active]="Action === 'SignIn'"
+        (click)="toggleFormSelector('SignIn')"
+      >
+        <span>Sign In</span>
+      </div>
+      <div
+        class="option"
+        [class.active]="Action === 'SignUp'"
+        (click)="toggleFormSelector('SignUp')"
+      >
+        <span>Sign Up</span>
+      </div>
+    </div>
+
+    @switch (Action) { @case ('SignIn') {
+    <form>
+      <div class="input">
+        <input type="email" [placeholder]="'Email'" />
+      </div>
+      <div class="input">
+        <input type="password" [placeholder]="'Password'" />
+      </div>
+      <div class="passRec">
+        <span (click)="toggleFormSelector('Recovery')"
+          >Forgot your password?</span
+        >
+      </div>
+      <div class="input">
+        <button type="submit" (click)="goToHome()">Sign In</button>
+      </div>
+    </form>
+    } @case ('SignUp') {
+    <form>
+      <div class="input names">
+        <input type="text" [placeholder]="'First Name'" />
+        <input type="text" [placeholder]="'Last Name'" />
+      </div>
+      <div class="input">
+        <input type="email" [placeholder]="'Email'" />
+      </div>
+      <div class="input">
+        <input type="text" [placeholder]="'Username'" />
+      </div>
+      <div class="input">
+        <input type="password" [placeholder]="'Password'" />
+      </div>
+      <div class="input">
+        <input type="password" [placeholder]="'Repeat Password'" />
+      </div>
+      <div class="input">
+        <button type="submit">Sign Up</button>
+      </div>
+    </form>
+    } @case ('Recovery') {
+    <form>
+      <div class="input">
+        <input type="email" [placeholder]="'Email'" />
+      </div>
+      <div class="input">
+        <button (click)="toggleFormSelector('EnterCode')">Recover</button>
+      </div>
+      <div class="input">
+        <span (click)="toggleFormSelector('SignIn')">Go Back</span>
+      </div>
+    </form>
+
+    } @case ('EnterCode') {
+    <form>
+      <div class="otp-wrapper">
+        @for (digit of otpDigits; track $index) {
+        <input
+          type="text"
+          maxlength="1"
+          class="otp-input"
+          [(ngModel)]="otp[$index]"
+          [ngModelOptions]="{ standalone: true }"
+          (input)="onInput($event, $index)"
+          (keydown)="onKeyDown($event, $index)"
+          (paste)="onPaste($event)"
+        />
+        }
+      </div>
+      <div class="input">
+        <button (click)="toggleFormSelector('EnterNewPassword')">
+          Recover
+        </button>
+      </div>
+    </form>
+
+    } @case ('EnterNewPassword') {
+    <form>
+      <div class="input">
+        <input type="password" [placeholder]="'New Password'" />
+      </div>
+      <div class="input">
+        <input type="password" [placeholder]="'Repeat New Password'" />
+      </div>
+      <div class="input">
+        <button (click)="toggleFormSelector('SignIn')">Save</button>
+      </div>
+    </form>
+    } }
+  </div>
+</section>
+
+<!-- <div class="themeSwitcher">
+  @if (theme.getCurrentTheme() === 'light') {
+  <nz-icon
+    nzType="sun"
+    nzTheme="outline"
+    class="nzIcons"
+    [style.color]="theme.getCurrentTheme() === 'light' ? '#000' : '#fff'"
+  />
+  } @if (theme.getCurrentTheme() === 'dark') {
+  <nz-icon
+    nzType="moon"
+    nzTheme="outline"
+    class="nzIcons"
+    [style.color]="theme.getCurrentTheme() === 'dark' ? '#fff' : '#000'"
+  />
+  }
+  <nz-switch
+    [ngModel]="theme.getCurrentTheme() === 'dark'"
+    (ngModelChange)="theme.toggleTheme()"
+  ></nz-switch>
+</div> -->
